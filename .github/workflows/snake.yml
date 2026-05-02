@@ -1,0 +1,33 @@
+name: Generate Contrib Serpent
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate snake animations
+        uses: Platane/snk@v3
+        with:
+          github_user_name: Yuvraj-Malik
+          outputs: |
+            dist/snake-cyber.svg?palette=github-dark&color_snake=%237CFFCB&color_dots=%23040b08,%230d1c14,%23152f24,%23326f55,%23f2fff8
+            dist/snake-neon.svg?palette=github-light&color_snake=%2319e68c&color_dots=%23edfdf5,%23bdf6d4,%2370e7a3,%2330c97d,%23148e53
+            dist/snake-aurora.gif?palette=github-dark&color_background=%23020a08&color_snake=%23a8ffda&color_dots=%23060e0b,%230f241b,%231f4b38,%2337a06f,%23f5fff9
+
+      - name: Publish to output branch
+        uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+          allow_empty_commit: true
+          commit_message: "chore: refresh snake art"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
